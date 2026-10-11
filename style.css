@@ -34,3 +34,29 @@ main{max-width:1660px}.pagebar{display:flex;align-items:center;justify-content:s
 .embedded .exportbar{margin-top:8px;padding:10px}
 @media(max-width:1100px){.embedded .designer{grid-template-columns:210px minmax(0,1fr)}.embedded .properties{grid-column:1/-1}}
 @media(max-width:680px){.embedded .qr-layout,.embedded .designer{grid-template-columns:1fr}.embedded main{padding:8px}.embedded .card{padding:12px}.embedded input,.embedded select,.embedded textarea{font-size:16px}.embedded .btn{min-height:42px}.embedded .properties{grid-column:auto}.embedded .stage canvas{max-height:none}.embedded .qrbox{max-width:280px}.embedded .switch{width:100%}}
+
+/* Fit the poster editor to the iframe viewport, with separate scrollable tools. */
+@media(min-width:761px){
+.embedded #designPanel .designer{height:calc(100dvh - 76px);min-height:360px;grid-template-columns:minmax(175px,210px) minmax(0,1fr) minmax(175px,210px);align-items:stretch}
+.embedded #designPanel .editor,.embedded #designPanel .properties{overflow-y:auto;min-height:0;grid-column:auto;padding:12px;overscroll-behavior:contain}
+.embedded #designPanel .workspace{min-height:0;display:flex;flex-direction:column}
+.embedded #designPanel .canvas-toolbar{flex-shrink:0;margin-bottom:6px}
+.embedded #designPanel .stage{flex:1;min-height:0;align-items:center;padding:10px}
+.embedded #designPanel .stage canvas{max-height:100%;max-width:100%;width:auto;height:auto;object-fit:contain}
+.embedded #designPanel .exportbar{flex-shrink:0;margin-top:6px;padding:8px}
+.embedded #designPanel .exportbar .actions{margin-top:6px}
+.embedded #designPanel .properties #nodeProperties{display:block}
+}
+@media(min-width:761px) and (max-width:1000px){
+.embedded #designPanel .designer{grid-template-columns:175px minmax(0,1fr) 175px;gap:8px}
+.embedded #designPanel .card{padding:10px}
+.embedded #designPanel .btn{white-space:normal;padding:6px 8px}
+.embedded #designPanel .templates{gap:5px}
+}
+@media(max-width:760px){
+.embedded #designPanel .designer{grid-template-columns:1fr;height:auto}
+.embedded #designPanel .workspace{order:0}
+.embedded #designPanel .editor{order:1}
+.embedded #designPanel .properties{order:2;grid-column:auto}
+.embedded #designPanel .stage canvas{width:auto;max-width:100%;max-height:55dvh}
+}

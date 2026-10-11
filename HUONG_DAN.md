@@ -5,7 +5,7 @@ Nhận diện đã chốt được đặt làm mặc định: biểu tượng VN
 Thông tin đầy đủ và quyết định thiết kế được ghi trong CHOT_NHAN_DIEN.md.
 
 ## Đưa lên GitHub
-1. Giải nén và upload **nội dung bên trong** QR_Studio_GitHub_v2_3 vào gốc repository thanhtung8584/Taoqr hiện tại, ghi đè các file app. Giữ đủ thư mục assets và vendor.
+1. Giải nén và upload **nội dung bên trong** QR_Studio_GitHub_v2_5 vào gốc repository thanhtung8584/Taoqr hiện tại, ghi đè các file app. Giữ đủ thư mục assets và vendor.
 2. Nếu config.js hiện tại đã có link trang chủ, giữ giá trị đó hoặc điền lại vào config.js mới:
    window.QR_CONFIG = { homeUrl: 'https://LINK-TRANG-CHU-CUA-ANH' };
 3. Settings → Pages → Deploy from a branch → main → /(root) → Save nếu chưa bật Pages.
@@ -60,7 +60,13 @@ Giao diện và footer giữ nhận diện của trang chủ: Lê Thanh Tùng, S
 - Chưa push lên GitHub. Upload nội dung thư mục ZIP vào repository thanhtung8584/Taoqr để cập nhật; giữ đủ assets và vendor.
 
 ## Nếu vẫn hiện mẫu cũ
-Trang đang chạy v2.1 thì cần ghi đè index.html, app.js, style.css và thư mục assets/vendor tại gốc repo Taoqr, không upload thư mục QR_Studio_GitHub_v2_3 thành thư mục con. Đợi GitHub Pages triển khai xong, mở lại trang và nhấn Ctrl+Shift+R. Tiêu đề tab bản mới là Thiết kế QR · v2.2; Kiểu QR mặc định là Bo góc. Các tài nguyên được gắn mã phiên bản để tải bản mới.
+Trang đang chạy v2.1 thì cần ghi đè index.html, app.js, style.css và thư mục assets/vendor tại gốc repo Taoqr, không upload thư mục QR_Studio_GitHub_v2_5 thành thư mục con. Đợi GitHub Pages triển khai xong, mở lại trang và nhấn Ctrl+Shift+R. Tiêu đề tab bản mới là Thiết kế QR · v2.2; Kiểu QR mặc định là Bo góc. Các tài nguyên được gắn mã phiên bản để tải bản mới.
 
 ## v2.3 – Giao diện nhúng trang chủ
 Tự nhận diện iframe để ẩn header/footer trùng, thu gọn form, khung QR và bảng thiết kế. Khi mở trực tiếp vẫn giữ giao diện đầy đủ. Có thể ép chế độ gọn bằng https://thanhtung8584.github.io/Taoqr/?embed=1. Tải PNG vẫn 1024/2048 px; chỉ khung xem trước được thu nhỏ. Upload nội dung bên trong thư mục vào gốc repo như trước.
+
+## v2.4
+Checkbox riêng Logo, Họ tên, Số Zalo; mặc định bật cả ba. Tắt thông tin sẽ căn logo và tên đơn vị ở giữa. Tắt cả ba hoặc tắt Nhận diện sẽ tạo QR thuần. Kiểu Mặc định là nhận diện rõ; Nền mờ đặt nhận diện nhạt phía sau các ô QR thật. Đã bỏ nét chéo sát logo theo mẫu duyệt.
+
+## v2.5
+Nền mờ mở rộng 86% chiều ngang vùng QR, độ mờ 10%, các ô QR thật phủ phía trên; giữ nguyên vùng trắng ngoài mã. Tab bảng QR tự khớp chiều cao iframe; hai cột công cụ cuộn riêng trên máy tính, khung thiết kế co theo diện tích còn lại. Điện thoại giữ bố cục một cột.
