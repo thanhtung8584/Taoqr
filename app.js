@@ -5,7 +5,7 @@ const BRAND={name:'Lê Thanh Tùng',zalo:'0888158584',unit:'VNPT Ninh Kiều'};
 
 let type='link',qrResult=null,qrLogo=null,qrRevision=0,imageBusy=0;
 const images=new Map();
-let defaultLogo=null;const defaultLogoReady=imageFrom('assets/vnpt-emblem.png').then(image=>{defaultLogo=image;}).catch(()=>message('Không tải được logo. Kiểm tra thư mục assets trên GitHub.'));
+let defaultLogo=null;const defaultLogoReady=imageFrom('assets/vnpt-emblem.png?v=2.3.0').then(image=>{defaultLogo=image;}).catch(()=>message('Không tải được logo. Kiểm tra thư mục assets trên GitHub.'));
 let state={width:900,height:1200,template:'wave',background:null,nodes:[]},selected=null,undo=[],redo=[],drag=null;
 const formats={portrait:[900,1200],a4:[900,1273],square:[1000,1000],landscape:[1200,900]};
 function message(s){$('status').textContent=s;}
@@ -20,7 +20,7 @@ document.querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>{type=b.datase
 ['content','qrStyle','qrColor','qrSize','caption','brandEnabled'].forEach(id=>$(id).addEventListener('input',invalidateQr));
 async function imageFrom(src){if(images.has(src))return images.get(src);const image=new Image();image.src=src;await image.decode();images.set(src,image);return image;}
 async function fileImage(file){if(!file)return null;if(file.size>12*1024*1024)throw Error('Chọn ảnh dưới 12 MB.');if(!['image/png','image/jpeg','image/webp'].includes(file.type))throw Error('Chọn ảnh PNG, JPG hoặc WebP.');const url=URL.createObjectURL(file);try{const img=await imageFrom(url);if(img.width*img.height>40000000)throw Error('Ảnh quá lớn. Hãy giảm kích thước trước khi chọn.');const ratio=Math.min(1,1600/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*ratio);c.height=Math.round(img.height*ratio);c.getContext('2d').drawImage(img,0,0,c.width,c.height);const src=c.toDataURL('image/png');await imageFrom(src);return src;}finally{images.delete(url);URL.revokeObjectURL(url);}}
-async function sampleLogo(){const image=await imageFrom('assets/vnpt-emblem.png'),c=document.createElement('canvas');c.width=300;c.height=Math.round(300*image.height/image.width);c.getContext('2d').drawImage(image,0,0,c.width,c.height);const src=c.toDataURL();await imageFrom(src);return src;}
+async function sampleLogo(){const image=await imageFrom('assets/vnpt-emblem.png?v=2.3.0'),c=document.createElement('canvas');c.width=300;c.height=Math.round(300*image.height/image.width);c.getContext('2d').drawImage(image,0,0,c.width,c.height);const src=c.toDataURL();await imageFrom(src);return src;}
 async function loadQrLogo(source){imageBusy++;invalidateQr();try{qrLogo=await source();message('Đã chọn logo. Bấm Tạo mã QR.');}catch(e){message(e.message);}finally{imageBusy--;}}
 $('qrLogo').onchange=()=>loadQrLogo(()=>fileImage($('qrLogo').files[0]));
 $('sampleQrLogo').onclick=()=>loadQrLogo(sampleLogo);
@@ -28,17 +28,20 @@ $('clearQrLogo').onclick=()=>{qrLogo=null;$('qrLogo').value='';invalidateQr();};
 function drawContain(ctx,img,x,y,w,h){const r=Math.min(w/img.width,h/img.height);ctx.drawImage(img,x+(w-img.width*r)/2,y+(h-img.height*r)/2,img.width*r,img.height*r);}
 function lines(ctx,text,max){let out=[];for(const paragraph of text.split('\n')){let line='';for(const ch of paragraph){if(ctx.measureText(line+ch).width>max&&line){out.push(line.trimEnd());line=ch===' '?'':ch;}else line+=ch;}out.push(line);}return out;}
 function font(n){return `${n.italic?'italic ':''}${n.bold?'700':'400'} ${n.size}px "${n.font}"`;}
-function fitText(ctx,text,max,size,min=5){while(size>min){ctx.font=`${size}px Arial`;if(ctx.measureText(text).width<=max)break;size-=.5;}return size;}
+function fitText(ctx,text,max,size,min=5,weight=400){while(size>min){ctx.font=`${weight} ${size}px Arial`;if(ctx.measureText(text).width<=max)break;size-=.5;}return size;}
 function drawBrand(ctx,q,logo,size,cell,offset){
- const n=q.getModuleCount(),w=n*cell*.29,h=n*cell*.115,x=(size-w)/2,y=(size-h)/2,pad=w*.065,lw=w*.28,divider=x+w*.40,tx=x+w*.46,tw=w*.48;
- ctx.save();ctx.fillStyle='#fff';ctx.beginPath();ctx.roundRect(x,y,w,h,Math.min(cell*.55,h*.1));ctx.fill();
- const logoH=h*.60;drawContain(ctx,logo,x+pad,y+h*.08,lw,logoH);
+ const n=q.getModuleCount(),w=n*cell*.34,h=n*cell*.145,x=(size-w)/2,y=(size-h)/2,pad=w*.065,lw=w*.28,divider=x+w*.40,tx=x+w*.46,tw=w*.48;
+ ctx.save();ctx.fillStyle='#fff';const cut=Math.min(h*.16,cell*.7);ctx.beginPath();ctx.moveTo(x+cut,y);ctx.lineTo(x+w,y);ctx.lineTo(x+w,y+h-cut);ctx.lineTo(x+w-cut,y+h);ctx.lineTo(x,y+h);ctx.lineTo(x,y+cut);ctx.closePath();ctx.fill();
+ // Diagonal accents stay pale and inside the cleared window. Original QR modules render above them.
+ for(const [ax,ay] of [[x+pad*.3,y+h*.46],[x+w-pad*.5,y+h*.92]]){ctx.strokeStyle='#d8ecf8';ctx.lineWidth=Math.max(1,h*.045);ctx.lineCap='round';ctx.beginPath();ctx.moveTo(ax-h*.10,ay+h*.10);ctx.lineTo(ax+h*.14,ay-h*.14);ctx.stroke();ctx.strokeStyle='#0871b6';ctx.lineWidth=Math.max(.8,h*.013);ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax+h*.12,ay-h*.12);ctx.stroke();}
+ const logoH=h*.60;
+ if(!qrLogo){const mark=document.createElement('canvas');mark.width=Math.ceil(lw*2);mark.height=Math.ceil(logoH*2);const mc=mark.getContext('2d');drawContain(mc,logo,0,0,mark.width,mark.height);const pixels=mc.getImageData(0,0,mark.width,mark.height);for(let i=0;i<pixels.data.length;i+=4){pixels.data[i]=0;pixels.data[i+1]=107;pixels.data[i+2]=172;pixels.data[i+3]=pixels.data[i+3]>=64?255:0;}mc.putImageData(pixels,0,0);ctx.drawImage(mark,x+pad,y+h*.08,lw,logoH);}else drawContain(ctx,logo,x+pad,y+h*.08,lw,logoH);
  ctx.textAlign='center';ctx.textBaseline='top';const unitSize=fitText(ctx,BRAND.unit,w*.39,h*.115);ctx.font=`${unitSize}px Arial`;ctx.fillStyle='#006bac';ctx.fillText(BRAND.unit,x+w*.205,y+h*.77);
  ctx.strokeStyle='#93a8ba';ctx.lineWidth=Math.max(.7,w*.002);ctx.beginPath();ctx.moveTo(divider,y+h*.19);ctx.bezierCurveTo(divider-1,y+h*.40,divider+1,y+h*.60,divider,y+h*.81);ctx.stroke();
- ctx.textAlign='left';const nameSize=fitText(ctx,BRAND.name,tw,h*.21);ctx.font=`${nameSize}px Arial`;ctx.fillStyle='#193750';ctx.fillText(BRAND.name,tx,y+h*.31);
- const contact='Zalo: '+BRAND.zalo,contactSize=fitText(ctx,contact,tw,h*.16);ctx.font=`${contactSize}px Arial`;ctx.fillStyle='#62798d';ctx.fillText(contact,tx,y+h*.58);
+ ctx.textAlign='left';const nameSize=fitText(ctx,BRAND.name,tw,h*.21,5,600);ctx.font=`600 ${nameSize}px Arial`;ctx.fillStyle='#153e62';ctx.fillText(BRAND.name,tx,y+h*.31);
+ const contact='Zalo: '+BRAND.zalo,contactSize=fitText(ctx,contact,tw,h*.16);ctx.font=`${contactSize}px Arial`;ctx.fillStyle='#006bac';ctx.fillText(contact,tx,y+h*.58);
  // Restore only original dark QR cells touching the outer padding, creating a notched edge.
- ctx.fillStyle=$('qrColor').value;for(let row=0;row<n;row++)for(let col=0;col<n;col++)if(q.isDark(row,col)){const px=offset+col*cell,py=offset+row*cell,cx=px+cell/2,cy=py+cell/2;const intersect=px<x+w&&px+cell>x&&py<y+h&&py+cell>y;const edge=cx<x+cell*.8||cx>x+w-cell*.8||cy<y+cell*.8||cy>y+h-cell*.8;const textProtected=cx>tx-cell*.2&&cx<tx+tw+cell*.2&&cy>y+h*.25&&cy<y+h*.81;const unitProtected=cx>x+w*.025&&cx<x+w*.385&&cy>y+h*.72&&cy<y+h*.94;if(intersect&&edge&&!textProtected&&!unitProtected)ctx.fillRect(px,py,cell,cell);}
+ ctx.fillStyle=$('qrColor').value;for(let row=0;row<n;row++)for(let col=0;col<n;col++)if(q.isDark(row,col)){const px=offset+col*cell,py=offset+row*cell,cx=px+cell/2,cy=py+cell/2;const intersect=px<x+w&&px+cell>x&&py<y+h&&py+cell>y;const edge=cx<x+cell*.8||cx>x+w-cell*.8||cy<y+cell*.8||cy>y+h-cell*.8;const textProtected=px+cell>tx-cell*.12&&px<tx+tw+cell*.12&&py+cell>y+h*.25&&py<y+h*.81;const unitProtected=px+cell>x+w*.005&&px<x+w*.405&&py+cell>y+h*.72&&py<y+h*.95;if(intersect&&edge&&!textProtected&&!unitProtected)ctx.fillRect(px,py,cell,cell);}
  ctx.restore();
 }
 function qrGenerate(){if(imageBusy)throw Error('Logo đang tải. Vui lòng đợi rồi tạo mã.');const raw=$('content').value.trim();if(!raw)throw Error('Vui lòng nhập nội dung.');if(new TextEncoder().encode(raw).length>1100)throw Error('Nội dung quá dài. Hãy rút ngắn hoặc dùng link tài liệu.');let link=null;if(type!=='text')link=safeUrl(raw);let q;for(let version=6;version<=40;version++){try{q=qrcode(version,'H');q.addData(raw,'Byte');q.make();break;}catch(e){q=null;}}if(!q)throw Error('Nội dung quá dài. Hãy rút ngắn hoặc dùng đường link.');const count=q.getModuleCount(),size=Number($('qrSize').value),cell=Math.floor(size/(count+8)),offset=Math.floor((size-count*cell)/2),c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,size,size);ctx.fillStyle=$('qrColor').value;

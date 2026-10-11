@@ -1,15 +1,15 @@
-# QR Studio GitHub v2.1
+# QR Studio GitHub v2.2
 
 ## Cập nhật từ v2.0
-Nhận diện đã chốt được đặt làm mặc định: biểu tượng VNPT trong suốt bên trái, dòng VNPT Ninh Kiều phía dưới; nét dọc ngăn với Lê Thanh Tùng / Zalo: 0888158584 bên phải. Các ô QR thật lấn nhẹ mép logo để tạo cảm giác logo ở lớp sau. Mặc định QR ô vuông, xanh đậm, PNG 2048 × 2048.
+Nhận diện đã chốt được đặt làm mặc định: biểu tượng VNPT trong suốt bên trái, dòng VNPT Ninh Kiều phía dưới; nét dọc ngăn với Lê Thanh Tùng / Zalo: 0888158584 bên phải. Các ô QR thật lấn nhẹ mép logo để tạo cảm giác logo ở lớp sau. Mặc định QR bo góc, xanh đậm, PNG 2048 × 2048.
 Thông tin đầy đủ và quyết định thiết kế được ghi trong CHOT_NHAN_DIEN.md.
 
 ## Đưa lên GitHub
-1. Giải nén và upload **nội dung bên trong** QR_Studio_GitHub_v2_1 vào gốc repository QR-Generator hiện tại, ghi đè các file app. Giữ đủ thư mục assets và vendor.
+1. Giải nén và upload **nội dung bên trong** QR_Studio_GitHub_v2_3 vào gốc repository thanhtung8584/Taoqr hiện tại, ghi đè các file app. Giữ đủ thư mục assets và vendor.
 2. Nếu config.js hiện tại đã có link trang chủ, giữ giá trị đó hoặc điền lại vào config.js mới:
    window.QR_CONFIG = { homeUrl: 'https://LINK-TRANG-CHU-CUA-ANH' };
 3. Settings → Pages → Deploy from a branch → main → /(root) → Save nếu chưa bật Pages.
-4. Link dự kiến với tài khoản quoctrungkg: https://quoctrungkg.github.io/QR-Generator/ . ZIP chưa tự được triển khai lên GitHub.
+4. Link dự kiến với tài khoản quoctrungkg: https://thanhtung8584.github.io/Taoqr/ . ZIP chưa tự được triển khai lên GitHub.
 5. Link app con đã dán ở trang chủ giữ nguyên. Chọn Nhúng trong trang chủ hoặc Mở tab mới theo nhu cầu.
 
 ## Tạo QR và gửi qua Zalo
@@ -36,7 +36,7 @@ Thông tin đầy đủ và quyết định thiết kế được ghi trong CHOT
 - Tải bảng PNG 1×/2×; kiểm tra QR trên bảng trước khi xuất. In/Lưu PDF dùng hộp thoại in tùy trình duyệt.
 - Lưu thiết kế tải JSON; Mở thiết kế để chỉnh tiếp. JSON có chứa ảnh và QR của bản đã lưu. Không tự lưu vào Drive.
 - QR trên bảng là bản chụp khi chèn. Nếu sửa nguồn QR, hãy tạo lại và Chèn vào bảng QR lần nữa để cập nhật.
-- Dự án JSON v2.0 vẫn được hỗ trợ; các nội dung đã lưu không tự thay đổi nhận diện. Chèn QR mới để áp dụng nhận diện mặc định v2.1.
+- Dự án JSON v2.0 vẫn được hỗ trợ; các nội dung đã lưu không tự thay đổi nhận diện. Chèn QR mới để áp dụng nhận diện mặc định v2.2.
 
 ## Quay về trang chủ
 Điền homeUrl trong config.js. Khi nhúng, ưu tiên nút ngoài trên thanh công cụ của trang chủ để giữ nguyên phiên. Nếu không cấu hình, nút trong app thử đóng tab do trang chủ mở, rồi hiện ô nhập URL khi không đóng được.
@@ -50,3 +50,17 @@ Kiểm tra render bằng @napi-rs/canvas và jsQR. Chưa chạy E2E trình duy�
 qrcode-generator 1.4.4: MIT (Kazuhiko Arase). jsQR 1.4.0: Apache-2.0 (Cosmo Wolfe), xem vendor/jsQR-LICENSE.txt.
 assets/vnpt-emblem.png: bản tách nền bằng ImageGen từ logo tham khảo anh đã cung cấp; không phải file vector gốc chính thức. Có thể thay bằng PNG trong suốt chuẩn của đơn vị, giữ tên file này để áp dụng toàn app.
 Giao diện và footer giữ nhận diện của trang chủ: Lê Thanh Tùng, SĐT 0916106016, Zalo 0888158584.
+
+## Thay đổi v2.2 theo mẫu gửi ngày 11/10/2026
+- Đã đối chiếu app.js công khai của https://thanhtung8584.github.io/Taoqr/ với v2.1; hai bản trùng nội dung tại thời điểm cập nhật. config.js trong ZIP lấy từ bản đang triển khai.
+- Nét chéo xanh nhạt, góc vát và ô QR thật phủ mép cửa sổ nhận diện; không tạo ô QR giả.
+- Biểu tượng mặc định hiển thị xanh đồng nhất và xử lý alpha để giảm loang màu; chữ được bảo vệ khỏi các ô QR lấn mép.
+- Vùng nhận diện nhỏ hơn ảnh mẫu để ưu tiên khả năng quét. Không bê ma trận trong ảnh mẫu vào app: jsQR không giải mã được ảnh mẫu ở lần kiểm tra này.
+- Mặc định: QR bo góc, xanh đậm, PNG 2048; vẫn chọn được ô vuông/chấm tròn.
+- Chưa push lên GitHub. Upload nội dung thư mục ZIP vào repository thanhtung8584/Taoqr để cập nhật; giữ đủ assets và vendor.
+
+## Nếu vẫn hiện mẫu cũ
+Trang đang chạy v2.1 thì cần ghi đè index.html, app.js, style.css và thư mục assets/vendor tại gốc repo Taoqr, không upload thư mục QR_Studio_GitHub_v2_3 thành thư mục con. Đợi GitHub Pages triển khai xong, mở lại trang và nhấn Ctrl+Shift+R. Tiêu đề tab bản mới là Thiết kế QR · v2.2; Kiểu QR mặc định là Bo góc. Các tài nguyên được gắn mã phiên bản để tải bản mới.
+
+## v2.3 – Giao diện nhúng trang chủ
+Tự nhận diện iframe để ẩn header/footer trùng, thu gọn form, khung QR và bảng thiết kế. Khi mở trực tiếp vẫn giữ giao diện đầy đủ. Có thể ép chế độ gọn bằng https://thanhtung8584.github.io/Taoqr/?embed=1. Tải PNG vẫn 1024/2048 px; chỉ khung xem trước được thu nhỏ. Upload nội dung bên trong thư mục vào gốc repo như trước.

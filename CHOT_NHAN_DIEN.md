@@ -28,3 +28,5 @@ Kiểm tra:
 - QR thật dùng mức sửa lỗi H, vùng trắng tối thiểu 4 module, ô QR đặt theo lưới pixel nguyên.
 - Mẫu phải qua giải mã độc lập ở ảnh gốc và mô phỏng JPEG chất lượng 75% tại 1024/512 px trước khi cho tải.
 - Không bảo đảm mọi bản nén của Zalo hoặc mọi thiết bị sẽ quét được. Cần thử trên Zalo thật trước khi in/gửi rộng rãi.
+
+Bổ sung v2.2: mẫu có góc vát/nét chéo được chọn làm mặc định. Màu logo phẳng xanh; QR bo góc. Tên và Zalo giữ đúng; không thay đổi các chức năng tạo QR và thiết kế bảng nền. Tài khoản/repository triển khai hiện tại: thanhtung8584/Taoqr.
